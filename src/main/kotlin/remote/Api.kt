@@ -7,6 +7,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.json.JsonElement
 import java.security.cert.X509Certificate
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -29,7 +30,7 @@ val httpClient = HttpClient(CIO) {
     }
 }
 
-suspend fun sendToApi(endpointUrl: String, body: List<TimeLogItem>) : HttpStatusCode{
+suspend fun sendToApi(endpointUrl: String, body: List<JsonElement>) : HttpStatusCode{
     val response = httpClient.post(endpointUrl) {
         contentType(ContentType.Application.Json)
         setBody(body)

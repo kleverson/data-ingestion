@@ -10,6 +10,8 @@ import data.LogLevel
 import data.TimeLogItem
 import kotlinx.coroutines.*
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
 import remote.sendToApi
 import java.io.File
 import kotlin.math.ceil
@@ -137,10 +139,10 @@ private fun formatLog(log: LogEntry): String {
     return "[${time}] [${log.level}] ${log.message}"
 }
 
-fun readJsonFile(path: String): List<TimeLogItem>{
+fun readJsonFile(path: String): List<JsonElement>{
     val content = File(path).readText()
 
     return Json{
         ignoreUnknownKeys = true
-    }.decodeFromString(content)
+    }.decodeFromString(JsonArray.serializer(), content)
 }

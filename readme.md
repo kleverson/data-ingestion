@@ -8,6 +8,9 @@ Due to a production bug, a system stopped processing webhook events for several 
 ## Solution
 This application was created to batch process webhook JSON files, allowing safe reprocessing of missed events and ensuring data consistency.
 
+<img width="1914" height="957" alt="data_ingestion_print" src="https://github.com/user-attachments/assets/9799fd28-fd7c-443b-a061-48fa5d64ae98" />
+
+
 ## Features
 - Batch processing of webhook JSON files
 - Desktop application built with Jetpack Compose

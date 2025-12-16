@@ -20,7 +20,7 @@ This application was created to batch process webhook JSON files, allowing safe 
 - JSON Processing
 
 ## How to Run
-Instructions to build and run the application locally.
+```./gradlew run```
 
 ## Use Case
-Ideal for data recovery, webhook reprocessing, and operational support scenarios.
+Ideal for data recovery, data reprocessing, and operational support scenarios.

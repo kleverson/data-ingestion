@@ -11,16 +11,14 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
-
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import ui.composeable.FormDropdown
+import ui.composeable.FormField
 import viewmodel.IngestionViewModel
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
-
 
 @Composable
 fun Form(vm: IngestionViewModel) {
@@ -46,51 +44,65 @@ fun Form(vm: IngestionViewModel) {
             }
             Spacer(modifier = Modifier.height(8.dp))
 
-            FormField(
-                label = "Endpoint url",
-                value = vm.endpointUrl,
-                icon = Icons.Default.Link,
-                onValueChange = { vm.endpointUrl = it },
-                modifier = Modifier.fillMaxWidth(),
-                onlyNumber = false
-            )
+            var verbOptions = listOf("GET", "POST", "PUT", "PATCH")
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                FormDropdown(
+                    label = "HTTP Verb",
+                    value = vm.verbHttp,
+                    icon = Icons.Default.SwapHoriz,
+                    itens = verbOptions,
+                    onItemSelected = { vm.verbHttp = it },
+                    modifier = Modifier.width(120.dp)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                FormField(
+                    label = "Endpoint url",
+                    value = vm.endpointUrl,
+                    icon = Icons.Default.Link,
+                    onValueChange = { vm.endpointUrl = it },
+                    onlyNumber = false
+                )
+            }
+
             Spacer(Modifier.height(8.dp))
 
-
-            Column(
-                modifier = Modifier.height(180.dp)
-                    .border(color = Color.White, width = 1.dp, shape = RoundedCornerShape(16.dp)).fillMaxWidth()
-                    .clickable {
-                        vm.pickFile()
-                    },
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                IconButton(
-                    modifier = Modifier.background(Color.Transparent),
-                    onClick = {
-                        vm.pickFile()
-                    }
+            if (!vm.verbHttp.equals("GET")) {
+                Column(
+                    modifier = Modifier.height(180.dp)
+                        .border(color = Color.White, width = 1.dp, shape = RoundedCornerShape(16.dp)).fillMaxWidth()
+                        .clickable {
+                            vm.pickFile()
+                        },
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
                 ) {
-                    Icon(
-                        Icons.Default.UploadFile,
-                        contentDescription = "Select JSON File",
-                        tint = Color(0xFF2ED573)
-                    )
-                }
+                    IconButton(
+                        modifier = Modifier.background(Color.Transparent),
+                        onClick = {
+                            vm.pickFile()
+                        }
+                    ) {
+                        Icon(
+                            Icons.Default.UploadFile,
+                            contentDescription = "Select JSON File",
+                            tint = Color(0xFF2ED573)
+                        )
+                    }
 
-                Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                if(vm.filePath.isNullOrEmpty()) {
-                    Text(" Select JSON File", style = TextStyle(color = Color.White))
-                }else{
-                    vm.filePath?.let {
-                        Text("File Path: $it", style = TextStyle(color = Color.White, fontSize = 12.sp))
+                    if (vm.filePath.isNullOrEmpty()) {
+                        Text(" Select JSON File", style = TextStyle(color = Color.White))
+                    } else {
+                        vm.filePath?.let {
+                            Text("File Path: $it", style = TextStyle(color = Color.White, fontSize = 12.sp))
+                        }
                     }
                 }
             }
-
-
         }
 
         Spacer(modifier = Modifier.width(24.dp))
@@ -99,7 +111,15 @@ fun Form(vm: IngestionViewModel) {
             modifier = Modifier.weight(1f).background(Color(0xFF1a2c22), shape = RoundedCornerShape(16.dp))
                 .padding(16.dp)
         ) {
-
+            FormField(
+                label = "Retry to fail",
+                value = vm.retry,
+                icon = Icons.Default.Repeat,
+                onValueChange = { vm.retry = it },
+                modifier = Modifier.fillMaxWidth(),
+                onlyNumber = true
+            )
+            Spacer(Modifier.width(8.dp))
             FormField(
                 label = "Processing Delay",
                 value = vm.delay,
@@ -110,6 +130,7 @@ fun Form(vm: IngestionViewModel) {
                 onlyNumber = true
             )
             Spacer(Modifier.width(8.dp))
+
             FormField(
                 label = "Chunk Size",
                 value = vm.chunckSize,

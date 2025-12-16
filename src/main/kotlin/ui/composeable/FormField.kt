@@ -1,4 +1,4 @@
-package ui
+package ui.composeable
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -20,6 +20,7 @@ fun FormField(
     suffix: String? = null,
     icon: ImageVector? = null,
     onValueChange: (String) -> Unit,
+    readOnly: Boolean = false,
     modifier: Modifier = Modifier,
     onlyNumber: Boolean = true
 ) {
@@ -42,6 +43,7 @@ fun FormField(
                 }
 
             },
+            readOnly = readOnly,
             leadingIcon = icon?.let {
                 {
                     Icon(

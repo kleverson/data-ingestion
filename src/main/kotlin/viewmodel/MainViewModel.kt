@@ -20,9 +20,9 @@ class IngestionViewModel{
     val logs = mutableStateListOf<LogEntry>()
 
     var endpointUrl by mutableStateOf("")
-    var verb by mutableStateOf("POST")
-
+    var verbHttp by mutableStateOf("POST")
     var delay by mutableStateOf("300")
+    var retry by mutableStateOf("3")
     var chunckSize by mutableStateOf("100")
     var batchSize by mutableStateOf("10")
     var filePath by mutableStateOf<String?>(null)
@@ -92,6 +92,7 @@ class IngestionViewModel{
                         endpointUrl = endpointUrl,
                         verb = verb,
                         body = sliceContent,
+                        retries = retry.toIntOrNull() ?: 3,
                     )
                     delay(delay.toLong())
                     log("Sent batch of ${sliceContent.size} items to API. Status code is ${result}", LogLevel.INFO)

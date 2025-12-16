@@ -20,6 +20,8 @@ class IngestionViewModel{
     val logs = mutableStateListOf<LogEntry>()
 
     var endpointUrl by mutableStateOf("")
+    var verb by mutableStateOf("POST")
+
     var delay by mutableStateOf("300")
     var chunckSize by mutableStateOf("100")
     var batchSize by mutableStateOf("10")
@@ -88,6 +90,7 @@ class IngestionViewModel{
 
                     val result = sendToApi(
                         endpointUrl = endpointUrl,
+                        verb = verb,
                         body = sliceContent,
                     )
                     delay(delay.toLong())

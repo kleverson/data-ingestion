@@ -64,7 +64,12 @@ compose.desktop {
                 "java.base",
                 "java.desktop",
                 "java.logging",
-                "java.net.http"
+                "java.net.http",
+                "java.naming",
+                "java.sql",
+                "java.xml",
+                "java.prefs",
+                "jdk.crypto.ec"
             )
 
             includeAllModules = false

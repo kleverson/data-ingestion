@@ -30,11 +30,33 @@ val httpClient = HttpClient(CIO) {
     }
 }
 
-suspend fun sendToApi(endpointUrl: String, body: List<JsonElement>) : HttpStatusCode{
-    val response = httpClient.post(endpointUrl) {
-        contentType(ContentType.Application.Json)
-        setBody(body)
-    }
+suspend fun sendToApi(endpointUrl: String,verbHttp: String = "POST", body: List<JsonElement>, retries: Int = 3) : HttpStatusCode{
+    repeat(retries){attempt ->
+        try{
+            var response = when(verbHttp.uppercase()){
+                "POST" ->  httpClient.post(endpointUrl) {
+                    contentType(ContentType.Application.Json)
+                    setBody(body)
+                }
+                "PUT" -> httpClient.put(endpointUrl) {
+                    contentType(ContentType.Application.Json)
+                    setBody(body)
+                }
+                "PATCH" -> httpClient.patch(endpointUrl) {
+                    contentType(ContentType.Application.Json)
+                    setBody(body)
+                }
+                "GET" -> httpClient.get(endpointUrl) {
+                    contentType(ContentType.Application.Json)
+                }
+                else -> throw IllegalArgumentException("HTTP verb $verbHttp not supported.")
+            }
 
-    return response.status
+            return response.status
+        }catch (e: Exception) {
+            println("Request failed on attempt ${attempt + 1}: ${e.message}")
+            if (attempt == retries - 1) throw e
+        }
+    }
+    return HttpStatusCode.RequestTimeout
 }

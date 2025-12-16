@@ -35,13 +35,12 @@ compose.desktop {
     application {
         mainClass = "MainKt"
 
-        // ProGuard desabilitado - requer Java 18 ou inferior
-        // buildTypes.release.proguard {
-        //     configurationFiles.from(project.file("proguard-rules.pro"))
-        //     isEnabled.set(false)
-        //     obfuscate.set(false)
-        //     optimize.set(true)
-        // }
+         buildTypes.release.proguard {
+             configurationFiles.from(project.file("proguard-rules.pro"))
+             isEnabled.set(false)
+             obfuscate.set(false)
+             optimize.set(true)
+         }
 
         jvmArgs += listOf(
             "-XX:+UseCompressedOops",

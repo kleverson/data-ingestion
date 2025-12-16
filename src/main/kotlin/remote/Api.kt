@@ -3,6 +3,7 @@ package remote
 import data.TimeLogItem
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -22,6 +23,11 @@ val trustAllCertificates = object : X509TrustManager {
 val httpClient = HttpClient(CIO) {
     install(ContentNegotiation) {
         json()
+    }
+    install(HttpTimeout){
+        requestTimeoutMillis = 60000
+        connectTimeoutMillis = 60000
+        socketTimeoutMillis = 60000
     }
     engine {
         https {

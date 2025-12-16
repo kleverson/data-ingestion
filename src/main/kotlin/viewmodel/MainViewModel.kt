@@ -90,6 +90,7 @@ class IngestionViewModel{
 
                     val result = sendToApi(
                         endpointUrl = endpointUrl,
+                        verb = verb,
                         body = sliceContent,
                         retries = retry.toIntOrNull() ?: 3,
                     )
